@@ -1,16 +1,24 @@
 {
-    "name": "littlejs-starter-kit",
+    "name": "wanderers-inevitable",
     "version": "1.0.0",
-    "description": "Game Jam starter kit for LittleJS",
+    "description": "A Wanderers Cycle game for LD50",
     "main": "index.js",
     "scripts": {
         "build": "./bin/build.sh",
         "test": "echo \"Error: no test specified\" && exit 1",
         "server": "npm run build && cd docs && ../node_modules/http-server/bin/http-server -p 8090"
     },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/psema4/wanderers-inevitable.git"
+    },
     "author": "Scott Elcomb",
     "license": "MIT",
     "devDependencies": {
         "http-server": "^0.11.1"
-    }
+    },
+    "bugs": {
+        "url": "https://github.com/psema4/wanderers-inevitable/issues"
+    },
+    "homepage": "https://github.com/psema4/wanderers-inevitable#readme"
 }
