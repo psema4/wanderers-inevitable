@@ -1,12 +1,12 @@
-function drawBtn(button) {
-    drawRect(vec2(button.x, button.y), vec2(button.w, button.h), button.bgColor, 0, 0)
-    drawText(`${button.label}`, overlayCanvas.width/2 + button.x, overlayCanvas.height/2 - 12 + (button.y*15)*-1, 30)
-}
-
 addGameScope(new GameScope({
     name: 'Main Menu',
     type: SCOPES.MENU,
     subType: 'MENU',
+
+    bg_img: false,
+
+    fontLight: false,
+    fontDark: false,
 
     scopedUpdate: true,
     scopedRender: true,
@@ -24,7 +24,7 @@ addGameScope(new GameScope({
         this._vars.buttons.push({
             x: 0,
             y: 5,
-            w: 10,
+            w: 12,
             h: 2,
             label: 'Play',
             bgColor: new Color(.7, .7, .7),
@@ -33,7 +33,7 @@ addGameScope(new GameScope({
         this._vars.buttons.push({
             x: 0,
             y: 0,
-            w: 10,
+            w: 12,
             h: 2,
             label: 'Settings',
             bgColor: new Color(.7, .7, .9),
@@ -42,11 +42,19 @@ addGameScope(new GameScope({
         this._vars.buttons.push({
             x: 0,
             y: -5,
-            w: 10,
+            w: 12,
             h: 2,
             label: 'Exit',
             bgColor: new Color(.7, .7, .9),
         })
+
+
+        this._bg_img = document.getElementById('img_bg_computer')
+
+        this._fontLight = new FontImage(document.getElementById('img_font_light'), vec2(64,64))
+        this._fontDark = new FontImage(document.getElementById('img_font_dark'), vec2(64,64))
+
+        cameraScale = 16 // default: 16
     },
 
     gameUpdate: function () {
@@ -85,18 +93,51 @@ addGameScope(new GameScope({
     gameUpdatePost: function () {},
     
     gameRender: function () {
-        drawRect(cameraPos, tileCollisionSize.add(vec2(50,40)), new Color(.2, .2, .2), 0, 0)
+        const sfcPos = vec2(0,0)
+        const sfcSize = vec2(1/cameraScale, 1/cameraScale)
+
+        drawCanvas2D(sfcPos, sfcSize, 0, false, (ctx) => {
+            const bgImage = this._bg_img
+            const originalScale = cameraScale
+
+            ctx.save()
+            cameraScale = 1
+
+            const topLeft = screenToWorld(vec2(0,0))
+            ctx.drawImage(bgImage, topLeft.x, topLeft.y, -1*topLeft.x*2, -1*topLeft.y*2)
+
+            cameraScale = originalScale
+            ctx.restore()
+        })
 
         this._vars.buttons.forEach((button) => {
-            drawBtn(button)
+            this.drawButton(button, this._fontDark)
         })
     },
     
     gameRenderPost: function () {
-        drawText(`${this._name}`, overlayCanvas.width/2, 80, 70)
+        const textScale = 0.35
+        const charSize = 64 * textScale
+        const xOffset = (charSize * this._name.length) / 2
+        this._fontLight.drawTextScreen(this._name, vec2((overlayCanvas.width/2)-xOffset, 6), textScale)
     },
 
     onEnter: function() {},
 
     onExit: function() {},
+
+    drawButton: function(button, font) {
+        drawRect(vec2(button.x, button.y), vec2(button.w, button.h), button.bgColor, 0, 0)
+
+        if (font && font.drawTextScreen) {
+            const textScale = 0.35
+            const charSize = 64 * textScale
+            const xOffset = (charSize * button.label.length) / 2
+
+            font.drawTextScreen(button.label, vec2(overlayCanvas.width/2-xOffset, overlayCanvas.height/2 -12 + ((button.y*15)*-1)), textScale)
+
+        } else {
+            drawText(`${button.label}`, overlayCanvas.width/2 + button.x, overlayCanvas.height/2 - 12 + (button.y*15)*-1, 30)
+        }
+    }
 }))

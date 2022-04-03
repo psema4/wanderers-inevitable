@@ -33,6 +33,7 @@ class GameScope {
         // Framework Methods
         this._onEnter = options.onEnter || dummyFunc
         this._onExit = options.onExit || dummyFunc
+        this._drawButton = options.drawButton || dummyFunc
     }
 
     // TODO: property getters & setters (clean up developer api)
@@ -57,5 +58,9 @@ class GameScope {
 
     gameRenderPost() {
         this._gameRenderPost()
+    }
+
+    drawButton(button, font) {
+        this._drawButton(button, font)
     }
 }
