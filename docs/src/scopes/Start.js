@@ -4,6 +4,7 @@ addGameScope(new GameScope({
     subType: 'MENU',
 
     bg_img: false,
+    button_img: false,
 
     fontLight: false,
     fontDark: false,
@@ -21,19 +22,21 @@ addGameScope(new GameScope({
     gameInit: function () {
         if (debug) console.debug(`${this._name} initialized.`)
 
-        this._vars.buttons.push({
-            x: 0,
-            y: -10,
-            w: 12,
-            h: 2,
-            label: 'continue',
-            bgColor: new Color(.7, .7, 1),
-        })
-
         this._bg_img = document.getElementById('img_bg_start')
+        this._button_img = document.getElementById('img_ui_button')
 
         this._fontLight = new FontImage(document.getElementById('img_font_light'), vec2(64,64)) 
         this._fontDark = new FontImage(document.getElementById('img_font_dark'), vec2(64,64)) 
+
+        this._vars.buttons.push(new LJSButton({
+            x: 0,
+            y: -10,
+            w: 15,
+            h: 3,
+            label: 'continue',
+            bgColor: new Color(.7, .7, 1),
+            image: this._button_img,
+        }))
 
         cameraScale = 16 // default: 16
     },
@@ -41,21 +44,12 @@ addGameScope(new GameScope({
     gameUpdate: function () {
         if (!this._scopedMouse || (this._scopedMouse && this._name === currentScope)) {
             if (mouseWasPressed(0)) {
-                let clickPos = mousePos.floor()
+                const clickPos = mousePos.floor()
 
                 this._vars.buttons.forEach((button, btnIdx) => {
-                    let bounds = {
-                        x1: button.x - button.w/2,
-                        x2: button.x + button.w/2,
-                        y1: button.y - button.h/2,
-                        y2: button.y + button.h/2,
-                    }
-
-                    if (clickPos.x >= bounds.x1 && clickPos.x <= bounds.x2) {
-                        if (clickPos.y >= bounds.y1 && clickPos.y <= bounds.y2) {
-                            new Sound([.5,.5]).play(mousePos)
-                            setGameScope("Main Menu")
-                        }
+                    if (button.isClicked(clickPos)) {
+                        new Sound([.5,.5]).play(mousePos)
+                        setGameScope("Main Menu")
                     }
                 })
             }
@@ -83,12 +77,12 @@ addGameScope(new GameScope({
         })
 
         this._vars.buttons.forEach((button) => {
-            this.drawButton(button, this._fontDark)
+            button.draw(this._fontDark)
         })
     },
 
     gameRenderPost: function () {
-        const textScale = 0.35
+        const textScale = 0.4
         const charSize = 64 * textScale
         const xOffset = (charSize * this._name.length) / 2
         this._fontLight.drawTextScreen(this._name, vec2((overlayCanvas.width/2)-xOffset, 6), textScale)
@@ -99,19 +93,4 @@ addGameScope(new GameScope({
 
     onExit: function() {
     },
-
-    drawButton: function(button, font) {
-        drawRect(vec2(button.x, button.y), vec2(button.w, button.h), button.bgColor, 0, 0)
-
-        if (font && font.drawTextScreen) {
-            const textScale = 0.35
-            const charSize = 64 * textScale
-            const xOffset = (charSize * button.label.length) / 2
-
-            font.drawTextScreen(button.label, vec2(overlayCanvas.width/2-xOffset, overlayCanvas.height/2 -12 + ((button.y*15)*-1)), textScale)
-
-        } else {
-            drawText(`${button.label}`, overlayCanvas.width/2 + button.x, overlayCanvas.height/2 - 12 + (button.y*15)*-1, 30)
-        }
-    }
 }))
