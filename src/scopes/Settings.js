@@ -32,7 +32,7 @@ addGameScope(new GameScope({
             x: 0,
             y: -10,
             w: 12,
-            h: 2,
+            h: 3,
             label: 'back',
             bgColor: new Color(.7, .7, 1),
             image: this._button_img,
@@ -89,9 +89,7 @@ addGameScope(new GameScope({
         this._fontLight.drawTextScreen(this._name, vec2((overlayCanvas.width/2)-xOffset, 6), textScale)
     },
 
-    onEnter: function() {
-    },
+    onEnter: function() {},
 
-    onExit: function() {
-    },
+    onExit: function() {},
 }))

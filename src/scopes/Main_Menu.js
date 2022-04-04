@@ -33,7 +33,7 @@ addGameScope(new GameScope({
             y: 5,
             w: 15,
             h: 3,
-            label: 'Play',
+            label: 'play',
             bgColor: new Color(.7, .7, .7),
             image: this._button_img,
             onClick: () => {
@@ -47,7 +47,7 @@ addGameScope(new GameScope({
             y: 0,
             w: 15,
             h: 3,
-            label: 'Settings',
+            label: 'settings',
             bgColor: new Color(.7, .7, .9),
             image: this._button_img,
             onClick: () => {
@@ -61,7 +61,7 @@ addGameScope(new GameScope({
             y: -5,
             w: 15,
             h: 3,
-            label: 'Exit',
+            label: 'back',
             bgColor: new Color(.7, .7, .9),
             image: this._button_img,
             onClick: () => {
@@ -117,7 +117,42 @@ addGameScope(new GameScope({
         this._fontLight.drawTextScreen(this._name, vec2((overlayCanvas.width/2)-xOffset, 6), textScale)
     },
 
-    onEnter: function() {},
+    onEnter: function() {
+        if (menuGainNode && menuGainNode.gain.value < 0.05)
+            menuGainNode.gain.value = 1 // FIXME: READ FROM VOLUME SETTING
+
+        if (menuAudioCtx)
+            return
+
+        menuAudioCtx = new AudioContext()
+
+        let menuAudioSrcEl = document.getElementById('mus_trailer')
+        let parentNode = document.getElementById('assets')
+        let src = '/assets/music/wc-inevitable-main.mp3'
+
+        if (menuAudioSrcEl) {
+            src = menuAudioSrcEl.src
+            parentNode = menuAudioSrcEl.parentNode
+            parentNode.removeChild(menuAudioSrcEl)
+        }
+
+        menuAudioSrcEl = document.createElement('audio')
+        menuAudioSrcEl.id = 'mus_trailer'
+        parentNode.appendChild(menuAudioSrcEl)
+        menuAudioSrcEl.src = src
+        menuAudioSrcEl.loop = true
+
+        menuGainNode = menuAudioCtx.createGain()
+
+        setTimeout(() => {
+            menuTrack = menuAudioCtx.createMediaElementSource(menuAudioSrcEl)
+
+            menuTrack.connect(menuGainNode)
+                 .connect(menuAudioCtx.destination)
+
+            toggleMenuMusic()
+        }, 1000)
+    },
 
     onExit: function() {},
 }))

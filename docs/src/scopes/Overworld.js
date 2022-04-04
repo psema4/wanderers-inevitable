@@ -4,6 +4,7 @@ addGameScope(new GameScope({
     subType: 'DEFAULT',
 
     bg_img: false,
+    button_img: false,
 
     fontLight: false,
     fontDark: false,
@@ -15,24 +16,31 @@ addGameScope(new GameScope({
     scopedGamepad: true,
 
     vars: {
-        PIXEL_SIZE: 2,
-        PIXEL_COLOR: new Color(.7, .7, .2),
-        MAP_WIDTH: 8,
-        MAP_HEIGHT: 8,
-        x: 0,
-        y: 0,
-        health: 0,
-        gold: 0,
-        inventory: [],
+        buttons: []
     },
 
     gameInit:       function () {
         if (debug) console.debug(`${this._name} initialized.`)
 
         this._bg_img = document.getElementById('img_bg_scene_1')
+        this._button_img = document.getElementById('img_ui_button')
 
         this._fontLight = new FontImage(document.getElementById('img_font_light'), vec2(64,64))
         this._fontDark = new FontImage(document.getElementById('img_font_dark'), vec2(64,64))
+
+        this._vars.buttons.push(new LJSButton({
+            x: 0,
+            y: -10,
+            w: 12,
+            h: 2,
+            label: '>>',
+            bgColor: new Color(.7, .7, 1),
+            image: this._button_img,
+            onClick: () => {
+                new Sound([.5,.5]).play(mousePos)
+                setGameScope("Scene 1")
+            }
+        }))
 
         cameraScale = 16 // default: 16
 
@@ -40,7 +48,13 @@ addGameScope(new GameScope({
 
     gameUpdate:     function () {
         if (!this._scopedMouse || (this._scopedMouse && this._name === currentScope)) {
-            if (mouseWasPressed(0)) sound_click.play(mousePos)
+            if (mouseWasPressed(0)) {
+                let clickPos = mousePos.floor()
+
+                this._vars.buttons.forEach((button, btnIdx) => {
+                    button.isClicked(clickPos)
+                })
+            }
         }
 
         if (!this._scopedKeyboard || (this._scopedKeyboard && this._name === currentScope)) {
@@ -71,7 +85,7 @@ addGameScope(new GameScope({
         })
 
         this._vars.buttons && this._vars.buttons.forEach((button) => {
-            this.drawButton(button, this._fontDark)
+            button.draw(this._fontDark)
         })
     },
 
@@ -82,22 +96,57 @@ addGameScope(new GameScope({
         this._fontLight.drawTextScreen(this._name, vec2((overlayCanvas.width/2)-xOffset, 6), textScale)
     },
 
-    onEnter: function() {},
-    
-    onExit: function() {},
+    onEnter: function() {
+        menuGainNode.gain.value = 0
 
-    drawButton: function(button, font) {
-        drawRect(vec2(button.x, button.y), vec2(button.w, button.h), button.bgColor, 0, 0)
+        if (!gameAudioCtx)
+            gameAudioCtx = new AudioContext()
 
-        if (font && font.drawTextScreen) {
-            const textScale = 0.35
-            const charSize = 64 * textScale
-            const xOffset = (charSize * button.label.length) / 2
+        let gameAudioSrcEl = document.getElementById('mus_game')
+        let parentNode = document.getElementById('assets')
+        let src = '/assets/music/wc-inevitable-trailer.mp3'
 
-            font.drawTextScreen(button.label, vec2(overlayCanvas.width/2-xOffset, overlayCanvas.height/2 -12 + ((button.y*15)*-1)), textScale)
-
-        } else {
-            drawText(`${button.label}`, overlayCanvas.width/2 + button.x, overlayCanvas.height/2 - 12 + (button.y*15)*-1, 30)
+        if (gameAudioSrcEl) {
+            src = gameAudioSrcEl.src
+            parentNode = gameAudioSrcEl.parentNode
+            parentNode.removeChild(gameAudioSrcEl)
         }
+
+        gameAudioSrcEl = document.createElement('audio')
+        gameAudioSrcEl.id = 'mus_game'
+        parentNode.appendChild(gameAudioSrcEl)
+        gameAudioSrcEl.src = src
+        gameAudioSrcEl.loop = true
+
+        gameGainNode = gameAudioCtx.createGain()
+
+        setTimeout(() => {
+            gameTrack = gameAudioCtx.createMediaElementSource(gameAudioSrcEl)
+
+            gameTrack.connect(gameGainNode)
+                 .connect(gameAudioCtx.destination)
+
+            toggleGameMusic()
+        }, 1000)
     },
+
+    onExit: function() {
+        if (gameAudioCtx) {
+            toggleGameMusic()
+
+            if (gameTrack) {
+                gameTrack.disconnect()
+                gameTrack = false
+            }
+
+            if (gameGainNode)
+                gameGainNode = false
+
+            gameAudioCtx = false
+
+            const gameAudioSrcEl = document.getElementById('mus_game')
+            if (gameAudioSrcEl)
+                gameAudioSrcEl.parentNode.removeChild(gameAudioSrcEl)
+        }
+    }
 }))
