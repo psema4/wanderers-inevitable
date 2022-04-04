@@ -22,7 +22,7 @@ addGameScope(new GameScope({
     gameInit:       function () {
         if (debug) console.debug(`${this._name} initialized.`)
 
-        this._bg_img = document.getElementById('img_bg_scene_1')
+        this._bg_img = document.getElementById('img_bg_scene_2')
         this._button_img = document.getElementById('img_ui_button')
 
         this._fontLight = new FontImage(document.getElementById('img_font_light'), vec2(64,64))
@@ -38,7 +38,7 @@ addGameScope(new GameScope({
             image: this._button_img,
             onClick: () => {
                 new Sound([.5,.5]).play(mousePos)
-                setGameScope("Main Menu")
+                setGameScope("Scene 2a")
             }
         }))
 
@@ -142,22 +142,6 @@ addGameScope(new GameScope({
     },
 
     onExit: function() {
-        if (gameAudioCtx) {
-            toggleGameMusic()
-
-            if (gameTrack) {
-                gameTrack.disconnect()
-                gameTrack = false
-            }
-
-            if (gameGainNode)
-                gameGainNode = false
-
-            gameAudioCtx = false
-
-            const gameAudioSrcEl = document.getElementById('mus_game')
-            if (gameAudioSrcEl)
-                gameAudioSrcEl.parentNode.removeChild(gameAudioSrcEl)
-        }
+        // destroyGameAudio()
     }
 }))

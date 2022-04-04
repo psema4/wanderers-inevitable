@@ -38,7 +38,7 @@ addGameScope(new GameScope({
             image: this._button_img,
             onClick: () => {
                 new Sound([.5,.5]).play(mousePos)
-                setGameScope("Scene 2")
+                setGameScope("Scene 1a")
             }
         }))
 
@@ -142,22 +142,6 @@ addGameScope(new GameScope({
     },
 
     onExit: function() {
-        if (gameAudioCtx) {
-            toggleGameMusic()
-
-            if (gameTrack) {
-                gameTrack.disconnect()
-                gameTrack = false
-            }
-
-            if (gameGainNode)
-                gameGainNode = false
-
-            gameAudioCtx = false
-
-            const gameAudioSrcEl = document.getElementById('mus_game')
-            if (gameAudioSrcEl)
-                gameAudioSrcEl.parentNode.removeChild(gameAudioSrcEl)
-        }
+        // destroyGameAudio()
     }
 }))

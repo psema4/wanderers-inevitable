@@ -1,5 +1,6 @@
 addGameScope(new GameScope({
     name: 'Overworld',
+    label: '493 GA - Icaraus Project HQ',
     type: SCOPES.GAME,
     subType: 'DEFAULT',
 
@@ -22,7 +23,7 @@ addGameScope(new GameScope({
     gameInit:       function () {
         if (debug) console.debug(`${this._name} initialized.`)
 
-        this._bg_img = document.getElementById('img_bg_scene_1')
+        this._bg_img = document.getElementById('img_bg_start')
         this._button_img = document.getElementById('img_ui_button')
 
         this._fontLight = new FontImage(document.getElementById('img_font_light'), vec2(64,64))
@@ -92,8 +93,9 @@ addGameScope(new GameScope({
     gameRenderPost: function () {
         const textScale = 0.35
         const charSize = 64 * textScale
-        const xOffset = (charSize * this._name.length) / 2
-        this._fontLight.drawTextScreen(this._name, vec2((overlayCanvas.width/2)-xOffset, 6), textScale)
+        const label = this._label || this._name
+        const xOffset = (charSize * label.length) / 2
+        this._fontLight.drawTextScreen(label, vec2((overlayCanvas.width/2)-xOffset, 6), textScale)
     },
 
     onEnter: function() {
@@ -131,22 +133,6 @@ addGameScope(new GameScope({
     },
 
     onExit: function() {
-        if (gameAudioCtx) {
-            toggleGameMusic()
-
-            if (gameTrack) {
-                gameTrack.disconnect()
-                gameTrack = false
-            }
-
-            if (gameGainNode)
-                gameGainNode = false
-
-            gameAudioCtx = false
-
-            const gameAudioSrcEl = document.getElementById('mus_game')
-            if (gameAudioSrcEl)
-                gameAudioSrcEl.parentNode.removeChild(gameAudioSrcEl)
-        }
+        destroyGameAudio()
     }
 }))

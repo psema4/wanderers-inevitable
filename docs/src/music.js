@@ -45,3 +45,23 @@ function toggleGameMusic(id='mus_game') {
         gameMusicPlaying = 'false'
     }
 }
+
+function destroyGameAudio() {
+    if (gameAudioCtx) {
+        toggleGameMusic()
+
+        if (gameTrack) {
+            gameTrack.disconnect()
+            gameTrack = false
+        }
+
+        if (gameGainNode)
+            gameGainNode = false
+
+        gameAudioCtx = false
+
+        const gameAudioSrcEl = document.getElementById('mus_game')
+        if (gameAudioSrcEl)
+            gameAudioSrcEl.parentNode.removeChild(gameAudioSrcEl)
+    }
+}

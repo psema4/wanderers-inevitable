@@ -10,6 +10,7 @@ class GameScope {
 
         // Scope Details
         this._name = options.name || 'UNNAMED'
+        this._label = options.label
         this._type = options.type || SCOPES.GAME
         this._subType = options.subType || 'DEFAULT'
 

@@ -1,5 +1,5 @@
 addGameScope(new GameScope({
-    name: 'Scene 1',
+    name: 'Scene 2a',
     type: SCOPES.GAME,
     subType: 'DEFAULT',
 
@@ -22,7 +22,7 @@ addGameScope(new GameScope({
     gameInit:       function () {
         if (debug) console.debug(`${this._name} initialized.`)
 
-        this._bg_img = document.getElementById('img_bg_scene_1')
+        this._bg_img = document.getElementById('img_bg_scene_2')
         this._button_img = document.getElementById('img_ui_button')
 
         this._fontLight = new FontImage(document.getElementById('img_font_light'), vec2(64,64))
@@ -38,7 +38,7 @@ addGameScope(new GameScope({
             image: this._button_img,
             onClick: () => {
                 new Sound([.5,.5]).play(mousePos)
-                setGameScope("Scene 1a")
+                setGameScope("Main Menu")
             }
         }))
 
@@ -108,40 +108,9 @@ addGameScope(new GameScope({
 
     onEnter: function() {
         this._enteredAt = new Date().getTime()
-        menuGainNode.gain.value = 0
-
-        if (!gameAudioCtx)
-            gameAudioCtx = new AudioContext()
-
-        let gameAudioSrcEl = document.getElementById('mus_game')
-        let parentNode = document.getElementById('assets')
-        let src = '/assets/music/song-167.mp3'
-
-        if (gameAudioSrcEl) {
-            src = gameAudioSrcEl.src
-            parentNode = gameAudioSrcEl.parentNode
-            parentNode.removeChild(gameAudioSrcEl)
-        }
-
-        gameAudioSrcEl = document.createElement('audio')
-        gameAudioSrcEl.id = 'mus_game'
-        parentNode.appendChild(gameAudioSrcEl)
-        gameAudioSrcEl.src = src
-        gameAudioSrcEl.loop = true
-
-        gameGainNode = gameAudioCtx.createGain()
-
-        setTimeout(() => {
-            gameTrack = gameAudioCtx.createMediaElementSource(gameAudioSrcEl)
-
-            gameTrack.connect(gameGainNode)
-                 .connect(gameAudioCtx.destination)
-
-            toggleGameMusic()
-        }, 1000)
     },
 
     onExit: function() {
-        // destroyGameAudio()
+        destroyGameAudio()
     }
 }))
