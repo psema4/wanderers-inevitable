@@ -119,7 +119,7 @@ addGameScope(new GameScope({
 
     onEnter: function() {
         if (menuGainNode && menuGainNode.gain.value < 0.05)
-            menuGainNode.gain.value = 1 // FIXME: READ FROM VOLUME SETTING
+            menuGainNode.gain.value = masterVolume
 
         if (menuAudioCtx)
             return
@@ -143,6 +143,7 @@ addGameScope(new GameScope({
         menuAudioSrcEl.loop = true
 
         menuGainNode = menuAudioCtx.createGain()
+        menuGainNode.gain.value = masterVolume
 
         setTimeout(() => {
             menuTrack = menuAudioCtx.createMediaElementSource(menuAudioSrcEl)

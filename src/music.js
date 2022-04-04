@@ -1,3 +1,5 @@
+var masterVolume = 1
+
 var menuAudioCtx = false
 var menuGainNode = false
 var menuTrack = false

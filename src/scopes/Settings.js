@@ -30,6 +30,52 @@ addGameScope(new GameScope({
 
         this._vars.buttons.push(new LJSButton({
             x: 0,
+            y: 10,
+            w: 12,
+            h: 3,
+            label: 'vol up',
+            bgColor: new Color(.7, .7, 1),
+            image: this._button_img,
+            onClick: () => {
+                new Sound([.5,.5]).play(mousePos)
+
+                masterVolume += 0.1
+                if (masterVolume > 1)
+                    masterVolume = 1
+
+                if (menuGainNode)
+                    menuGainNode.gain.value = masterVolume
+
+                if (gameGainNode)
+                    gameGainNode.gain.value = masterVolume
+            }
+        }))
+
+        this._vars.buttons.push(new LJSButton({
+            x: 0,
+            y: 5,
+            w: 12,
+            h: 3,
+            label: 'vol down',
+            bgColor: new Color(.7, .7, 1),
+            image: this._button_img,
+            onClick: () => {
+                new Sound([.5,.5]).play(mousePos)
+
+                masterVolume -= 0.1
+                if (masterVolume < 0)
+                    masterVolume = 0
+
+                if (menuGainNode)
+                    menuGainNode.gain.value = masterVolume
+
+                if (gameGainNode)
+                    gameGainNode.gain.value = masterVolume
+            }
+        }))
+
+        this._vars.buttons.push(new LJSButton({
+            x: 0,
             y: -10,
             w: 12,
             h: 3,
@@ -85,8 +131,12 @@ addGameScope(new GameScope({
     gameRenderPost: function () {
         const textScale = 0.35
         const charSize = 64 * textScale
-        const xOffset = (charSize * this._name.length) / 2
+        let xOffset = (charSize * this._name.length) / 2
         this._fontLight.drawTextScreen(this._name, vec2((overlayCanvas.width/2)-xOffset, 6), textScale)
+
+        const msg = `Volume: ${parseInt(masterVolume*10, 10)}`
+        xOffset = (charSize * msg.length)/2
+        this._fontDark.drawTextScreen(msg, vec2((overlayCanvas.width/2)-xOffset, 120), textScale)
     },
 
     onEnter: function() {},

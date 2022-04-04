@@ -133,6 +133,7 @@ addGameScope(new GameScope({
         gameAudioSrcEl.loop = true
 
         gameGainNode = gameAudioCtx.createGain()
+        gameGainNode.gain.value = masterVolume
 
         setTimeout(() => {
             gameTrack = gameAudioCtx.createMediaElementSource(gameAudioSrcEl)
