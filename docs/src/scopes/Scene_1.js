@@ -64,6 +64,7 @@ addGameScope(new GameScope({
 
         if (!this._scopedKeyboard || (this._scopedKeyboard && this._name === currentScope)) {
             if (keyWasReleased(27)) { // ESC
+                destroyGameAudio()
                 setGameScope('Main Menu')
             }
         }
