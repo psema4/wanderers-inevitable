@@ -1,6 +1,6 @@
 addGameScope(new GameScope({
-    name: 'Overworld',
-    label: '493 GA - Icaraus Project HQ',
+    name: 'Prologue',
+    label: 'Wanderers: Catalyst - Prologue',
     type: SCOPES.GAME,
     subType: 'DEFAULT',
 
@@ -39,7 +39,7 @@ addGameScope(new GameScope({
             image: this._button_img,
             onClick: () => {
                 new Sound([.5,.5]).play(mousePos)
-                setGameScope("Scene 1")
+                setGameScope("Prologue 2")
             }
         }))
 
@@ -48,6 +48,11 @@ addGameScope(new GameScope({
     },
 
     gameUpdate:     function () {
+        const now = new Date().getTime()
+
+        if (now - this._enteredAt < 1000)
+            return
+
         if (!this._scopedMouse || (this._scopedMouse && this._name === currentScope)) {
             if (mouseWasPressed(0)) {
                 let clickPos = mousePos.floor()
@@ -60,6 +65,7 @@ addGameScope(new GameScope({
 
         if (!this._scopedKeyboard || (this._scopedKeyboard && this._name === currentScope)) {
             if (keyWasReleased(27)) { // ESC
+                destroyGameAudio()
                 setGameScope('Main Menu')
             }
         }
@@ -68,6 +74,8 @@ addGameScope(new GameScope({
     gameUpdatePost: function () {},
     
     gameRender:     function () {
+        const now = new Date().getTime()
+
         const sfcPos = vec2(0,0)
         const sfcSize = vec2(1/cameraScale, 1/cameraScale)
 
@@ -85,6 +93,9 @@ addGameScope(new GameScope({
             ctx.restore()
         })
 
+        if (now - this._enteredAt < 1000)
+            return
+
         this._vars.buttons && this._vars.buttons.forEach((button) => {
             button.draw(this._fontDark)
         })
@@ -95,10 +106,11 @@ addGameScope(new GameScope({
         const charSize = 64 * textScale
         const label = this._label || this._name
         const xOffset = (charSize * label.length) / 2
-        this._fontLight.drawTextScreen(label, vec2((overlayCanvas.width/2)-xOffset, 6), textScale)
+        this._fontDark.drawTextScreen(label, vec2((overlayCanvas.width/2)-xOffset, 6), textScale)
     },
 
     onEnter: function() {
+        this._enteredAt = new Date().getTime()
         menuGainNode.gain.value = 0
 
         if (!gameAudioCtx)
@@ -133,6 +145,6 @@ addGameScope(new GameScope({
     },
 
     onExit: function() {
-        destroyGameAudio()
+        //destroyGameAudio()
     }
 }))

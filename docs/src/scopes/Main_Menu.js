@@ -38,7 +38,7 @@ addGameScope(new GameScope({
             image: this._button_img,
             onClick: () => {
                 new Sound([.5,.5]).play(mousePos)
-                setGameScope("Overworld")
+                setGameScope("Prologue")
             },
         }))
 

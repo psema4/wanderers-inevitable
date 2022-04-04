@@ -34,12 +34,18 @@ function setGameScope(scopeName='') {
         currentScope = scopeName
 
         const prev = getGameScope(previousScope)
-        if (debug) console.debug(`Leaving ${prev._name}.`)
-        prev._onExit()
-
         const curr = getGameScope(currentScope)
-        if (debug) console.debug(`Entering "${curr._name}".`)
-        curr._onEnter()
+
+        try {
+            if (debug) console.debug(`Leaving ${prev._name}.`)
+            prev._onExit()
+
+            if (debug) console.debug(`Entering "${curr._name}".`)
+            curr._onEnter()
+
+        } catch(e) {
+            console.error(`${prev && prev._name || '?'} -> ${curr && curr._name || '?'} ERROR:`, e)
+        }
 }
 
 function gameInit() {

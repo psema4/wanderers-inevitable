@@ -1,5 +1,5 @@
 addGameScope(new GameScope({
-    name: 'Prologue',
+    name: 'Prologue 2',
     label: 'Wanderers: Catalyst - Prologue',
     type: SCOPES.GAME,
     subType: 'DEFAULT',
@@ -39,7 +39,7 @@ addGameScope(new GameScope({
             image: this._button_img,
             onClick: () => {
                 new Sound([.5,.5]).play(mousePos)
-                setGameScope("Prologue 2")
+                setGameScope("Scene 1")
             }
         }))
 
@@ -111,40 +111,9 @@ addGameScope(new GameScope({
 
     onEnter: function() {
         this._enteredAt = new Date().getTime()
-        menuGainNode.gain.value = 0
-
-        if (!gameAudioCtx)
-            gameAudioCtx = new AudioContext()
-
-        let gameAudioSrcEl = document.getElementById('mus_game')
-        let parentNode = document.getElementById('assets')
-        let src = '/assets/music/wc-inevitable-trailer.mp3'
-
-        if (gameAudioSrcEl) {
-            src = gameAudioSrcEl.src
-            parentNode = gameAudioSrcEl.parentNode
-            parentNode.removeChild(gameAudioSrcEl)
-        }
-
-        gameAudioSrcEl = document.createElement('audio')
-        gameAudioSrcEl.id = 'mus_game'
-        parentNode.appendChild(gameAudioSrcEl)
-        gameAudioSrcEl.src = src
-        gameAudioSrcEl.loop = true
-
-        gameGainNode = gameAudioCtx.createGain()
-
-        setTimeout(() => {
-            gameTrack = gameAudioCtx.createMediaElementSource(gameAudioSrcEl)
-
-            gameTrack.connect(gameGainNode)
-                 .connect(gameAudioCtx.destination)
-
-            toggleGameMusic()
-        }, 1000)
     },
 
     onExit: function() {
-        //destroyGameAudio()
+        destroyGameAudio()
     }
 }))
