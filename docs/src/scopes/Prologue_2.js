@@ -81,16 +81,12 @@ addGameScope(new GameScope({
 
         drawCanvas2D(sfcPos, sfcSize, 0, false, (ctx) => {
             const bgImage = this._bg_img
-            const originalScale = cameraScale
-
+            //const originalScale = cameraScale
+            //cameraScale = 1
             ctx.save()
-            cameraScale = 1
-
-            const topLeft = screenToWorld(vec2(0,0))
-            ctx.drawImage(bgImage, topLeft.x, topLeft.y, -1*topLeft.x*2, -1*topLeft.y*2)
-
-            cameraScale = originalScale
+            ctx.drawImage(bgImage, bgImage.width/2 * -1, bgImage.height/2 * -1)
             ctx.restore()
+            //cameraScale = originalScale
         })
 
         if (now - this._enteredAt < 1000)

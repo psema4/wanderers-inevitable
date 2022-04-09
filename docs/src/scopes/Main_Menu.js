@@ -128,7 +128,7 @@ addGameScope(new GameScope({
 
         let menuAudioSrcEl = document.getElementById('mus_trailer')
         let parentNode = document.getElementById('assets')
-        let src = '/assets/music/wc-inevitable-main.mp3'
+        let src = '/assets/music/Menu Loop.mp3'
 
         if (menuAudioSrcEl) {
             src = menuAudioSrcEl.src

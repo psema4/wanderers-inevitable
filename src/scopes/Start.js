@@ -33,7 +33,7 @@ addGameScope(new GameScope({
             y: -10,
             w: 15,
             h: 3,
-            label: 'continue',
+            label: 'LAUNCH',
             bgColor: new Color(.7, .7, 1),
             image: this._button_img,
         }))
@@ -64,16 +64,12 @@ addGameScope(new GameScope({
 
         drawCanvas2D(sfcPos, sfcSize, 0, false, (ctx) => {
             const bgImage = this._bg_img
-            const originalScale = cameraScale
-
+            //const originalScale = cameraScale
+            //cameraScale = 1
             ctx.save()
-            cameraScale = 1
-
-            const topLeft = screenToWorld(vec2(0,0))
-            ctx.drawImage(bgImage, topLeft.x, topLeft.y, -1*topLeft.x*2, -1*topLeft.y*2)
-
-            cameraScale = originalScale
+            ctx.drawImage(bgImage, bgImage.width/2 * -1, bgImage.height/2 * -1)
             ctx.restore()
+            //cameraScale = originalScale
         })
 
         this._vars.buttons.forEach((button) => {
@@ -82,10 +78,10 @@ addGameScope(new GameScope({
     },
 
     gameRenderPost: function () {
-        const textScale = 0.4
-        const charSize = 64 * textScale
-        const xOffset = (charSize * this._name.length) / 2
-        this._fontLight.drawTextScreen(this._name, vec2((overlayCanvas.width/2)-xOffset, 6), textScale)
+        //const textScale = 0.4
+        //const charSize = 64 * textScale
+        //const xOffset = (charSize * this._name.length) / 2
+        //this._fontLight.drawTextScreen(this._name, vec2((overlayCanvas.width/2)-xOffset, 6), textScale)
     },
 
     onEnter: function() {
