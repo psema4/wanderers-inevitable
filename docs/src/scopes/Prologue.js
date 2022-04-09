@@ -34,7 +34,7 @@ addGameScope(new GameScope({
             y: -10,
             w: 12,
             h: 2,
-            label: '>>',
+            label: 'CONTINUE',
             bgColor: new Color(.7, .7, 1),
             image: this._button_img,
             onClick: () => {

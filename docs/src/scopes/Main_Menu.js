@@ -33,7 +33,7 @@ addGameScope(new GameScope({
             y: 5,
             w: 15,
             h: 3,
-            label: 'play',
+            label: 'PLAY',
             bgColor: new Color(.7, .7, .7),
             image: this._button_img,
             onClick: () => {
@@ -47,7 +47,7 @@ addGameScope(new GameScope({
             y: 0,
             w: 15,
             h: 3,
-            label: 'settings',
+            label: 'SETTINGS',
             bgColor: new Color(.7, .7, .9),
             image: this._button_img,
             onClick: () => {
@@ -61,7 +61,7 @@ addGameScope(new GameScope({
             y: -5,
             w: 15,
             h: 3,
-            label: 'back',
+            label: 'BACK',
             bgColor: new Color(.7, .7, .9),
             image: this._button_img,
             onClick: () => {

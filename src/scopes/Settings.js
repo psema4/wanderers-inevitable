@@ -33,7 +33,7 @@ addGameScope(new GameScope({
             y: 10,
             w: 12,
             h: 3,
-            label: 'vol up',
+            label: 'VOL UP',
             bgColor: new Color(.7, .7, 1),
             image: this._button_img,
             onClick: () => {
@@ -56,7 +56,7 @@ addGameScope(new GameScope({
             y: 5,
             w: 12,
             h: 3,
-            label: 'vol down',
+            label: 'VOL DOWN',
             bgColor: new Color(.7, .7, 1),
             image: this._button_img,
             onClick: () => {
@@ -79,7 +79,7 @@ addGameScope(new GameScope({
             y: -10,
             w: 12,
             h: 3,
-            label: 'back',
+            label: 'BACK',
             bgColor: new Color(.7, .7, 1),
             image: this._button_img,
             onClick: () => {
