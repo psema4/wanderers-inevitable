@@ -58,7 +58,7 @@ addGameScope(new GameScope({
 
         this._vars.buttons.push(new LJSButton({
             x: 0,
-            y: -5,
+            y: -16,
             w: 15,
             h: 3,
             label: 'BACK',
@@ -74,6 +74,10 @@ addGameScope(new GameScope({
     },
 
     gameUpdate: function () {
+        const now = new Date().getTime()
+        if (now - this._enteredAt < 1000)
+            return
+
         if (!this._scopedMouse || (this._scopedMouse && this._name === currentScope)) {
             if (mouseWasPressed(0)) {
                 const clickPos = mousePos.floor()
@@ -88,6 +92,8 @@ addGameScope(new GameScope({
     gameUpdatePost: function () {},
     
     gameRender: function () {
+        const now = new Date().getTime()
+
         const sfcPos = vec2(0,0)
         const sfcSize = vec2(1/cameraScale, 1/cameraScale)
 
@@ -105,6 +111,9 @@ addGameScope(new GameScope({
             ctx.restore()
         })
 
+        if (now - this._enteredAt < 1000)
+            return
+
         this._vars.buttons.forEach((button) => {
             button.draw(this._fontDark)
         })
@@ -118,6 +127,8 @@ addGameScope(new GameScope({
     },
 
     onEnter: function() {
+        this._enteredAt = new Date().getTime()
+
         if (menuGainNode && menuGainNode.gain.value < 0.05)
             menuGainNode.gain.value = masterVolume
 

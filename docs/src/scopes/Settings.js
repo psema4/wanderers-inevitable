@@ -30,7 +30,7 @@ addGameScope(new GameScope({
 
         this._vars.buttons.push(new LJSButton({
             x: 0,
-            y: 10,
+            y: 5,
             w: 12,
             h: 3,
             label: 'VOL UP',
@@ -53,7 +53,7 @@ addGameScope(new GameScope({
 
         this._vars.buttons.push(new LJSButton({
             x: 0,
-            y: 5,
+            y: 0,
             w: 12,
             h: 3,
             label: 'VOL DOWN',
@@ -76,7 +76,7 @@ addGameScope(new GameScope({
 
         this._vars.buttons.push(new LJSButton({
             x: 0,
-            y: -10,
+            y: -16,
             w: 12,
             h: 3,
             label: 'BACK',

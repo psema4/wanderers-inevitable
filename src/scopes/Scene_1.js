@@ -30,7 +30,7 @@ addGameScope(new GameScope({
 
         this._vars.buttons.push(new LJSButton({
             x: 0,
-            y: -10,
+            y: -16,
             w: 12,
             h: 2,
             label: 'CONTINUE',
