@@ -7,6 +7,7 @@ addGameScope(new GameScope({
     button_img: false,
 
     fontLight: false,
+    fontMid: false,
     fontDark: false,
 
     scopedUpdate: true,
@@ -26,6 +27,7 @@ addGameScope(new GameScope({
         this._button_img = document.getElementById('img_ui_button')
 
         this._fontLight = new FontImage(document.getElementById('img_font_light'), vec2(64,64))
+        this._fontMid = new FontImage(document.getElementById('img_font_mid'), vec2(64,64))
         this._fontDark = new FontImage(document.getElementById('img_font_dark'), vec2(64,64))
 
         this._vars.buttons.push(new LJSButton({
@@ -101,7 +103,7 @@ addGameScope(new GameScope({
         const textScale = 0.35
         const charSize = 64 * textScale
         const xOffset = (charSize * this._name.length) / 2
-        this._fontLight.drawTextScreen(this._name, vec2((overlayCanvas.width/2)-xOffset, 6), textScale)
+        this._fontMid.drawTextScreen(this._name, vec2((overlayCanvas.width/2)-xOffset, 20), textScale)
     },
 
     onEnter: function() {

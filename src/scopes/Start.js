@@ -7,6 +7,7 @@ addGameScope(new GameScope({
     button_img: false,
 
     fontLight: false,
+    fontMid: false,
     fontDark: false,
 
     scopedUpdate: true,
@@ -26,6 +27,7 @@ addGameScope(new GameScope({
         this._button_img = document.getElementById('img_ui_button')
 
         this._fontLight = new FontImage(document.getElementById('img_font_light'), vec2(64,64)) 
+        this._fontMid = new FontImage(document.getElementById('img_font_mid'), vec2(64,64))
         this._fontDark = new FontImage(document.getElementById('img_font_dark'), vec2(64,64)) 
 
         this._vars.buttons.push(new LJSButton({
