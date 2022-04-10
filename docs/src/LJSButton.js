@@ -60,7 +60,7 @@ class LJSButton {
         })
         
         const drawX = overlayCanvas.width/2
-        const drawY = overlayCanvas.height/2 + ((this._y*15)*-1) - this._image.height/10
+        const drawY = overlayCanvas.height/2 + ((this._y*(cameraScale*0.99))*-1) - this._image.height/10
 
         font.drawTextScreen(this._label, vec2(drawX, drawY), textScale, true)
     }
